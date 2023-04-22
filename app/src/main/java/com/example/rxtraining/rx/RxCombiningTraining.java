@@ -3,10 +3,17 @@ package com.example.rxtraining.rx;
 
 import com.example.rxtraining.exceptions.NotImplementedException;
 
+import org.reactivestreams.Subscription;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -27,7 +34,12 @@ public class RxCombiningTraining {
      * результирующей последовательности тоже сработает этот метод.
      */
     public Observable<Integer> summation(Observable<Integer> integerObservable1, Observable<Integer> integerObservable2) {
-        throw new NotImplementedException();
+         return integerObservable1.zipWith(integerObservable2, new BiFunction<Integer, Integer, Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) throws Exception {
+                return integer + integer2;
+            }
+        });
     }
 
     /**
@@ -42,7 +54,7 @@ public class RxCombiningTraining {
      */
     public Observable<List<String>> requestItems(Observable<String> searchObservable,
                                                  Observable<Integer> categoryObservable) {
-        throw new NotImplementedException();
+        return Observable.combineLatest(searchObservable, categoryObservable, (searchString, categoryId) -> searchItems(searchString, categoryId));
     }
 
     /**
@@ -55,7 +67,8 @@ public class RxCombiningTraining {
      */
     public Observable<Integer> composition(Observable<Integer> intObservable1,
                                            Observable<Integer> intObservable2) {
-        throw new NotImplementedException();
+
+        return Observable.merge(intObservable1, intObservable2);
     }
 
     /**
@@ -67,7 +80,8 @@ public class RxCombiningTraining {
      * элементы последовательности {@code intObservable}
      */
     public Observable<Integer> additionalFirstItem(int firstItem, Observable<Integer> intObservable) {
-        throw new NotImplementedException();
+
+        return Observable.just(firstItem).mergeWith(intObservable);
     }
 
     /* Вспомогательные методы */

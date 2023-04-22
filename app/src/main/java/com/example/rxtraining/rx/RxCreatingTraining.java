@@ -1,8 +1,12 @@
 package com.example.rxtraining.rx;
 
+import com.example.rxtraining.exceptions.ExpectedException;
+import com.example.rxtraining.exceptions.NotImplementedException;
+
 import io.reactivex.Observable;
-import ru.artkorchagin.rxtraining.exceptions.ExpectedException;
-import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.internal.operators.observable.ObservableAll;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -20,7 +24,7 @@ public class RxCreatingTraining {
      * @return {@link Observable}, который эммитит только значение {@code value}
      */
     public Observable<Integer> valueToObservable(int value) {
-        throw new NotImplementedException();
+        return Observable.just(value);
     }
 
     /**
@@ -30,7 +34,7 @@ public class RxCreatingTraining {
      * @return {@link Observable}, который эммитит по порядку все строки из заданного массива
      */
     public Observable<String> arrayToObservable(String[] array) {
-        throw new NotImplementedException();
+        return Observable.fromArray(array);
     }
 
     /**
@@ -41,7 +45,11 @@ public class RxCreatingTraining {
      * {@link #expensiveMethod()}
      */
     public Observable<Integer> expensiveMethodResult() {
-        throw new NotImplementedException();
+        Observable<Integer> observable = Observable.empty();
+        observable.subscribe(data -> {
+            expensiveMethod();
+        });
+        return observable;
     }
 
     /**

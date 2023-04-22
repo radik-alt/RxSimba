@@ -3,7 +3,12 @@ package com.example.rxtraining.rx;
 import com.example.rxtraining.exceptions.NotImplementedException;
 
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -19,7 +24,7 @@ public class RxCompletableTraining {
      * @return {@link Completable}, который вызывает {@link #havyMethod()}
      */
     public Completable callFunction() {
-        throw new NotImplementedException();
+        return Completable.fromAction(() -> havyMethod());
     }
 
     /**
@@ -30,7 +35,7 @@ public class RxCompletableTraining {
      * @return {@code Completable}
      */
     public Completable completeWhenTrue(Single<Boolean> checkSingle) {
-        throw new NotImplementedException();
+        return Completable.fromSingle(checkSingle);
     }
 
     /* Вспомогательные методы */
@@ -40,7 +45,7 @@ public class RxCompletableTraining {
      * (Вспомогательный метод! Не изменять!)
      */
     void havyMethod() {
-        // Выполнение операций
+        System.out.println(2);
     }
 
 }

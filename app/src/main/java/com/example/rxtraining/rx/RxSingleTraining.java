@@ -3,11 +3,14 @@ package com.example.rxtraining.rx;
 import com.example.rxtraining.exceptions.ExpectedException;
 import com.example.rxtraining.exceptions.NotImplementedException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -25,7 +28,13 @@ public class RxSingleTraining {
      * либо ошибку {@link ExpectedException} если оно отрицательное
      */
     public Single<Integer> onlyOneElement(Integer value) {
-        throw new NotImplementedException();
+        return Single.create(emitter -> {
+            if (value <= 0) {
+                emitter.onError(new ExpectedException());
+            } else {
+                emitter.onSuccess(value);
+            }
+        });
     }
 
     /**
@@ -37,7 +46,7 @@ public class RxSingleTraining {
      * последовательность пустая
      */
     public Single<Integer> onlyOneElementOfSequence(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.firstOrError();
     }
 
     /**
@@ -48,7 +57,7 @@ public class RxSingleTraining {
      * пустая
      */
     public Single<Integer> calculateSumOfValues(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.reduce(0, (one, two) -> one + two).onErrorReturnItem(0);
     }
 
     /**
@@ -59,7 +68,7 @@ public class RxSingleTraining {
      * {@code integerObservable}
      */
     public Single<List<Integer>> collectionOfValues(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.toList();
     }
 
     /**
@@ -70,7 +79,7 @@ public class RxSingleTraining {
      * {@code integerSingle} положительны, {@code false} если есть отрицательные элементы
      */
     public Single<Boolean> allElementsIsPositive(Observable<Integer> integerSingle) {
-        throw new NotImplementedException();
+        return integerSingle.all(i -> i > 0);
     }
 
 }

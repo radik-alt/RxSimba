@@ -1,9 +1,10 @@
 package com.example.rxtraining.rx;
 
+import com.example.rxtraining.exceptions.NotImplementedException;
+
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -21,7 +22,13 @@ public class RxMaybeTraining {
      * либо не эммитит ничего, если {@code value} отрицательное
      */
     public Maybe<Integer> positiveOrEmpty(Integer value) {
-        throw new NotImplementedException();
+        return Maybe.create(emitter -> {
+           if (value < 0) {
+               emitter.onComplete();
+           } else  {
+               emitter.onSuccess(value);
+           }
+        });
     }
 
     /**

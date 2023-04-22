@@ -1,7 +1,10 @@
 package com.example.rxtraining.rx;
 
+import com.example.rxtraining.exceptions.NotImplementedException;
+
 import io.reactivex.Observable;
-import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
@@ -22,7 +25,8 @@ public class RxErrorsTraining {
      * defaultValue
      */
     public Observable<Integer> handleErrorsWithDefaultValue(Observable<Integer> intObservable, final Integer defaultValue) {
-        throw new NotImplementedException();
+        return intObservable.doOnError(throwable -> {
+        });
     }
 
     /**

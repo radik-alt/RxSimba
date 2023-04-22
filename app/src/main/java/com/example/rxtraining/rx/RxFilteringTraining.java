@@ -1,7 +1,8 @@
 package com.example.rxtraining.rx;
 
+import com.example.rxtraining.exceptions.NotImplementedException;
+
 import io.reactivex.Observable;
-import ru.artkorchagin.rxtraining.exceptions.NotImplementedException;
 
 /**
  * @author Arthur Korchagin (artur.korchagin@simbirsoft.com)
