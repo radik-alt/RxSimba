@@ -49,7 +49,8 @@ public class RxTransformingTraining {
      * поток имён объединённых первой буквой в имени
      */
     public Observable<GroupedObservable<Character, String>> distributeNamesByFirstLetter(Observable<String> namesObservable) {
-        throw new NotImplementedException();
+        return namesObservable
+                .groupBy(name -> name.charAt(0));
     }
 
     /**
@@ -61,7 +62,8 @@ public class RxTransformingTraining {
      * @return {@code Observable} который эммитит списки чисел из {@code intObservable}
      */
     public Observable<List<Integer>> collectsIntsToLists(int listsSize, Observable<Integer> intObservable) {
-        throw new NotImplementedException();
+        return intObservable
+                .buffer(listsSize);
     }
 
     /* Вспомогательные методы */

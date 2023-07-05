@@ -50,7 +50,9 @@ public class RxMaybeTraining {
      * последовательность пустая
      */
     public Maybe<Integer> calculateSumOfValues(Observable<Integer> integerObservable) {
-        throw new NotImplementedException();
+        return integerObservable.reduce((sum, value) -> sum + value)
+                .flatMap(Maybe::just)
+                .defaultIfEmpty(0);
     }
 
     /**
@@ -61,7 +63,7 @@ public class RxMaybeTraining {
      * {@code defaultValue} если последовательность пустая
      */
     public Single<Integer> leastOneElement(Maybe<Integer> integerMaybe, int defaultValue) {
-        throw new NotImplementedException();
+        return integerMaybe.defaultIfEmpty(defaultValue).toSingle();
     }
 
 }

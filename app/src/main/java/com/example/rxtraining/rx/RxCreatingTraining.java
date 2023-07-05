@@ -3,6 +3,8 @@ package com.example.rxtraining.rx;
 import com.example.rxtraining.exceptions.ExpectedException;
 import com.example.rxtraining.exceptions.NotImplementedException;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -45,11 +47,7 @@ public class RxCreatingTraining {
      * {@link #expensiveMethod()}
      */
     public Observable<Integer> expensiveMethodResult() {
-        Observable<Integer> observable = Observable.empty();
-        observable.subscribe(data -> {
-            expensiveMethod();
-        });
-        return observable;
+        return Observable.defer(() -> Observable.just(expensiveMethod()));
     }
 
     /**
@@ -63,7 +61,13 @@ public class RxCreatingTraining {
      * {@code onError} или {@code onComplete} не должны вызваться.
      */
     public Observable<Long> increasingSequenceWithDelays(long initialDelay, long period) {
-        throw new NotImplementedException();
+        return Observable
+                // Создаем бесконечную последовательность, начиная с 0L
+                .interval(0L, period, TimeUnit.MILLISECONDS)
+                // Добавляем начальную задержку
+                .delay(initialDelay, TimeUnit.MILLISECONDS)
+                // Преобразуем значения, добавляя к каждому 1L
+                .map(n -> n + 1L);
     }
 
     /**
@@ -74,7 +78,8 @@ public class RxCreatingTraining {
      * задержкой {@code delay}
      */
     public Observable<Long> delayedZero(long delay) {
-        throw new NotImplementedException();
+        return Observable.timer(delay, TimeUnit.MILLISECONDS)
+                .map(time -> 0L);
     }
 
     /**
@@ -88,7 +93,13 @@ public class RxCreatingTraining {
      * 3. {@link #unstableMethod(boolean)}
      */
     public Observable<Integer> combinationExpensiveMethods(final boolean unstableCondition) {
-        throw new NotImplementedException();
+        return Observable.defer(() -> {
+            Integer result1 = expensiveMethod();
+            Integer result2 = alternativeExpensiveMethod();
+            Integer result3 = unstableMethod(unstableCondition);
+
+            return Observable.just(result1, result2, result3);
+        });
     }
 
     /**
