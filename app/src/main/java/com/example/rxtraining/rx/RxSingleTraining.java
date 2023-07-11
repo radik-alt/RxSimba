@@ -46,7 +46,7 @@ public class RxSingleTraining {
      * последовательность пустая
      */
     public Single<Integer> onlyOneElementOfSequence(Observable<Integer> integerObservable) {
-        return integerObservable.firstOrError();
+        return integerObservable.singleOrError();
     }
 
     /**
@@ -57,7 +57,7 @@ public class RxSingleTraining {
      * пустая
      */
     public Single<Integer> calculateSumOfValues(Observable<Integer> integerObservable) {
-        return integerObservable.reduce(0, (one, two) -> one + two).onErrorReturnItem(0);
+        return integerObservable.reduce(0, Integer::sum).onErrorReturnItem(0);
     }
 
     /**

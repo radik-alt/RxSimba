@@ -93,13 +93,12 @@ public class RxCreatingTraining {
      * 3. {@link #unstableMethod(boolean)}
      */
     public Observable<Integer> combinationExpensiveMethods(final boolean unstableCondition) {
-        return Observable.defer(() -> {
-            Integer result1 = expensiveMethod();
-            Integer result2 = alternativeExpensiveMethod();
-            Integer result3 = unstableMethod(unstableCondition);
-
-            return Observable.just(result1, result2, result3);
-        });
+        return Observable.just(expensiveMethod())
+                .flatMap(result1 -> Observable.just(alternativeExpensiveMethod())
+                        .flatMap(result2 -> Observable.just(unstableMethod(unstableCondition))
+                                .map(result3 -> result1 + result2 + result3)
+                        )
+                );
     }
 
     /**
@@ -109,7 +108,7 @@ public class RxCreatingTraining {
      * {@code onComplete} или {@code onError}
      */
     public Observable<Integer> withoutAnyEvents() {
-        throw new NotImplementedException();
+        return Observable.empty();
     }
 
     /**
@@ -118,7 +117,7 @@ public class RxCreatingTraining {
      * @return {@link Observable} который не эммитит значения, вызывается только {@code onComplete}
      */
     public Observable<Integer> onlyComplete() {
-        throw new NotImplementedException();
+        return Observable.empty();
     }
 
     /**
@@ -128,7 +127,7 @@ public class RxCreatingTraining {
      * ошибка {@link ExpectedException}
      */
     public Observable<Integer> onlyError() {
-        throw new NotImplementedException();
+        return Observable.error(new ExpectedException());
     }
 
     /* Вспомогательные методы */

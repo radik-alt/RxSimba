@@ -1,5 +1,6 @@
 package com.example.rxtraining.rx;
 
+import com.example.rxtraining.exceptions.ExpectedException;
 import com.example.rxtraining.exceptions.NotImplementedException;
 
 import io.reactivex.Completable;
@@ -35,7 +36,14 @@ public class RxCompletableTraining {
      * @return {@code Completable}
      */
     public Completable completeWhenTrue(Single<Boolean> checkSingle) {
-        return Completable.fromSingle(checkSingle);
+        return checkSingle
+                .flatMapCompletable(value -> {
+                    if (value) {
+                        return Completable.complete();
+                    } else {
+                        return Completable.error(new ExpectedException());
+                    }
+                });
     }
 
     /* Вспомогательные методы */

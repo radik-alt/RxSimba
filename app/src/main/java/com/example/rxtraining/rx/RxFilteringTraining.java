@@ -75,7 +75,7 @@ public class RxFilteringTraining {
     public Observable<Integer> onlyLastPerInterval(int periodMills, Observable<Integer> intValues) {
         return intValues
                 .debounce(periodMills, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged();
+                .switchIfEmpty(Observable.empty());
     }
 
     /**
